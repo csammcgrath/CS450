@@ -1,11 +1,10 @@
 class Node():
-    def __init__(self, name = "", value = -1, children = {}):
+    def __init__(self, name = "", children = {}):
         self.name = name
-        self.value = value
         self.children = children
 
     def isLeaf(self):
-        return self.children == type(dict)
+        return not self.children
 
     def appendChild(self, attribute, value):
         self.children[attribute] = value

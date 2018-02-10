@@ -4,13 +4,13 @@ import numpy as np
 from node import Node
 
 def print_tree(node):
-    print(node.name)
+    print(node.name, end="")
 
-    if (not node.children.isLeaf()):
+    if (not node.isLeaf()):
         for (key, value) in node.children.items():
-            print(key, "{")
-            print_tree(value)
-            print("}")
+            print(" ", key, "-> {", end="")
+            print_tree(value),
+            print("}", end="")
 
 def entropy(p):
     if p == 0:
@@ -18,16 +18,16 @@ def entropy(p):
     else:
         return -p * math.log2(p)
 
-def calculate_entropy(data, attr): 
-    the_set = data[attr].unique()
+def calculate_entropy(data, attribute): 
+    the_set = data[attribute].unique()
     no_bin = 0.0
     yes_bin = 0.0
     total_entropy = 0.0
         
-    for attribute in the_set:
-        for index in range(0,len(data)):
-            if attribute == data[attr][index]:
-                if data.iloc[attr][:,-1] == 0:
+    for attr in the_set:
+        for index in range(0, len(data)):
+            if attr == data[attribute][index]:
+                if data.iloc[:,-1][index] == 0:
                     no_bin += 1
                 else:
                     yes_bin += 1
@@ -78,10 +78,7 @@ def build_tree(data, attributes, removed = []):
         # calculate the best value and set it to the node
         entropies = {}
         for attribute in remaining:
-            entropies[attribute] = calculate_entropy(data[attribute], data.iloc[:,-1])
-
-        for k, v in entropies.items():
-            print(k, v)
+            entropies[attribute] = calculate_entropy(data, attribute)
             
         # find the lowest value in our list of entropies
         bestVal = min(entropies, key = entropies.get)
@@ -93,12 +90,13 @@ def build_tree(data, attributes, removed = []):
         childNodes = {}
         for poss_value in poss_values:
             data_subset = data[data[bestVal] == poss_value]
-
+            data_subset.reset_index(inplace=True, drop=True)
             # remove this attribute
             removed.append(bestVal)
 
             node = build_tree(data_subset, attributes, removed)
-            currentNode.children = childNodes[poss_value] = node
+            childNodes[poss_value] = node
+            currentNode.children = childNodes
             removed = []
 
     return currentNode

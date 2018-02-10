@@ -24,4 +24,4 @@ def get_voting():
     df = pd.read_csv("https://archive.ics.uci.edu/ml/machine-learning-databases/voting-records/house-votes-84.data",
                         delimiter=",", header=None, name=headers)
 
-    return df[headers[1:17]], df[headers[0:1]]
+    return df[headers[1:17]], df[headers[0:1]], headers

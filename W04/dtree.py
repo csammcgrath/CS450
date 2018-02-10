@@ -27,15 +27,14 @@ def execute_algorithm(dataset):
     classifier = DecisionTree()
 
     if (dataset == 1):
-        data, targets = get_loans()
+        data, targets, headers = get_loans()
     elif (dataset == 2):
-        data, targets = get_voting()
+        data, targets, headers = get_voting()
     count = 0
 
     train_data, test_data, train_target, test_target = split_data(data, targets)
+    model = classifier.fit(train_data, train_target, headers)
 
-
-    model = classifier.fit(train_data, train_target)
     target_predicted = model.predict(test_data)
 
     for index in range(len(test_data)):
@@ -54,11 +53,8 @@ def execute_algorithm(dataset):
 def get_accuracy(count, length):
     return (count / length) * 100
 
-
-
 def split_data(data, target):
     return train_test_split(data, target, test_size=.3)
-
 
 if __name__ == "__main__":
     main()

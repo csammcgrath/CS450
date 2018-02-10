@@ -10,4 +10,4 @@ def get_loans():
 
     df = pd.read_csv("loan.csv", delimiter=",", header = None, names = headers)
 
-    return df[headers[0:3]], df[headers[3:4]]
+    return df[headers[0:3]], df[headers[3:4]], headers

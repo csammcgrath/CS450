@@ -21,7 +21,25 @@ def get_voting():
         'export-south-africa'   #17
     ]
 
-    df = pd.read_csv("https://archive.ics.uci.edu/ml/machine-learning-databases/voting-records/house-votes-84.data",
-                        delimiter=",", header=None, name=headers)
+    obj = {
+        'democrat': 0,
+        'republican': 1,
+        'n': 0,
+        'y': 1,
+        '?': 2
+    }
 
-    return df[headers[1:17]], df[headers[0:1]], headers
+
+    df = pd.read_csv("https://archive.ics.uci.edu/ml/machine-learning-databases/voting-records/house-votes-84.data",
+                        delimiter=",", header=None, names=headers)
+
+
+    df.replace(obj, inplace=True)
+    
+    train_set = df[headers[1:]]
+    target_set = df[headers[0:1]]
+    
+    headers.remove('party')
+    headers.append('party')
+
+    return train_set, target_set, headers

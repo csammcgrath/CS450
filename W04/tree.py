@@ -21,7 +21,7 @@ class SamDecisionTree():
         self.headers = headers
         frames = [data, targets]
         final_data = pd.concat(frames, axis=1)
-        final_data.reset_index(inplace=True, drop=True)
+        
         self.tree = watdt.build_tree(final_data, headers[:-1])
     
     def __repr__(self):
@@ -31,13 +31,26 @@ class SamDecisionTree():
     #tree traversal actually happens here
     def predict(self, data):
         predictions = []
-      
-        for item in data:
-            predictions.append(self.predict_class(item))
+        
+        for item, row in data.iterrows():
+            attr = self.headers[:]
+            predictions.append(self.predict_class(self.tree, row, attr))
 
         return predictions
 
-    def predict_class(self, node):
+    def predict_class(self, node, row, headers):
+        for attribute in headers:
+            if attribute == node.name:
+                value = row[attribute]
+                if value in node.children:
+                    new_node = node.children[value]
+                    if new_node.isLeaf():
+                        return new_node.name
+                    else:
+                        headers.remove(attribute)
+                        return self.predict_class(new_node, row, headers)
+                else:
+                    return 0
         return 1
 
     def print_tree(self, node):

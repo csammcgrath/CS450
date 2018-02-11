@@ -33,11 +33,19 @@ def execute_algorithm(dataset):
     count = 0
 
     train_data, test_data, train_target, test_target = split_data(data, targets)
+
+    train_data.reset_index(inplace=True, drop=True)
+    test_data.reset_index(inplace=True, drop=True)
+    train_target.reset_index(inplace=True, drop=True)
+    test_target.reset_index(inplace=True, drop=True)
+
     model = classifier.fit(train_data, train_target, headers)
 
     target_predicted = model.predict(test_data)
 
-    for index in range(len(test_data)):
+    test_target = test_target[headers[-1]]
+
+    for index in range(len(target_predicted)):
         #increment counter for every match from
         #target_predicted and test_target
         if target_predicted[index] == test_target[index]:

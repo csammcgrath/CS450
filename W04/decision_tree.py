@@ -3,6 +3,9 @@ import operator
 import numpy as np
 from node import Node
 
+# print_tree
+#
+#This function goes through and prints the tree in a nice, beautiful way to the user.
 def print_tree(node):
     print(node.name, end="")
 
@@ -12,19 +15,28 @@ def print_tree(node):
             print_tree(value),
             print("}", end="")
 
+# entropy
+#
+# Takes a number and returns the entropy calculation for that p
 def entropy(p):
     if p == 0:
         return 0
     else:
         return -p * math.log2(p)
 
+# calculate_entropy
+#
+#This function goes through and calculates the weighted entropy of each category
 def calculate_entropy(data, attribute): 
+    #we only care about the attributes so here, we get a list of all unique values
     the_set = data[attribute].unique()
     no_bin = 0.0
     yes_bin = 0.0
     total_entropy = 0.0
         
     for attr in the_set:
+        #determine whether the target is a 0 or a 1. This helps us incorporate
+        #weighted entropy. 
         for index in range(0, len(data)):
             if attr == data[attribute][index]:
                 if data.iloc[:,-1][index] == 0:
@@ -32,6 +44,7 @@ def calculate_entropy(data, attribute):
                 else:
                     yes_bin += 1
 
+        #calculations needed
         total = no_bin + yes_bin
         no_bin_entropy = entropy(no_bin/total)
         yes_bin_entropy = entropy(yes_bin/total)
@@ -42,6 +55,9 @@ def calculate_entropy(data, attribute):
 
     return total_entropy
 
+# most_common
+#
+# This function goes through and returns the most common feature
 def most_common(data):
     count = {}
     
@@ -51,6 +67,10 @@ def most_common(data):
 
     return most_common
 
+# build_tree
+#
+#This function is a recursion function and is the heart of the ID3
+#algorithm. 
 def build_tree(data, attributes, removed = []):
     # make an empty node
     currentNode = Node()
@@ -94,9 +114,14 @@ def build_tree(data, attributes, removed = []):
             # remove this attribute
             removed.append(bestVal)
 
+            #recursively call build_tree to build the next set of nodes
             node = build_tree(data_subset, attributes, removed)
+
+            #creating the children
             childNodes[poss_value] = node
             currentNode.children = childNodes
+
+            #reset the removed array for the next possible value
             removed = []
 
     return currentNode

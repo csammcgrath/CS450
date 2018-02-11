@@ -33,12 +33,15 @@ def get_voting():
     df = pd.read_csv("https://archive.ics.uci.edu/ml/machine-learning-databases/voting-records/house-votes-84.data",
                         delimiter=",", header=None, names=headers)
 
-
+    #replace all of the datset values with the values in obj
     df.replace(obj, inplace=True)
     
+    #split dataset
     train_set = df[headers[1:]]
     target_set = df[headers[0:1]]
     
+    #this is kind of a retarded way to move the first column (targets) to the last column
+    #so it would work
     headers.remove('party')
     headers.append('party')
 

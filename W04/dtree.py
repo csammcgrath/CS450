@@ -1,6 +1,9 @@
-from tree import DecisionTree
+import pandas as pd
+import numpy as np
 from decision_tree import build_tree
+from tree import DecisionTree
 from sklearn.model_selection import train_test_split
+from sklearn import datasets as sk_dataset
 from loan import get_loans
 from voting import get_voting
 
@@ -22,29 +25,42 @@ def main():
     except (ValueError) as err:
         print('ERROR: {}'.format(err))
 
+# execute_algorithm()
+#
+#This function goes through and begins the execution of the ID3 tree.
 def execute_algorithm(dataset):
     #we all know that this whole shell is designed just for the Decision Tree
     classifier = DecisionTree()
 
+    #determine which dataset to retrieve
     if (dataset == 1):
         data, targets, headers = get_loans()
     elif (dataset == 2):
         data, targets, headers = get_voting()
     count = 0
 
+    #split dataset into random parts
     train_data, test_data, train_target, test_target = split_data(data, targets)
 
+    #reset the indexes so the dataframe can be properly parsed.
     train_data.reset_index(inplace=True, drop=True)
     test_data.reset_index(inplace=True, drop=True)
     train_target.reset_index(inplace=True, drop=True)
     test_target.reset_index(inplace=True, drop=True)
 
+    #build the tree!
     model = classifier.fit(train_data, train_target, headers)
 
+    #prompt the user if he/she wants to display the tree
+    print_id3(model)
+
+    #target_predicted is an array of predictions that is received by the predict
     target_predicted = model.predict(test_data)
 
+    #this allows us to know which column is the target
     test_target = test_target[headers[-1]]
 
+    #loop through the target_predicted and count up the correct predictions
     for index in range(len(target_predicted)):
         #increment counter for every match from
         #target_predicted and test_target
@@ -53,7 +69,26 @@ def execute_algorithm(dataset):
 
     accuracy = get_accuracy(count, len(test_data))
 
+    #report to the user
     print("Accuracy: {:.2f}%".format(accuracy))
+
+#print_id3
+#
+#this function prompts the user if he/she wants to see the tree
+def print_id3(tree):
+    try:
+        print("Would you like to print the ID3 Tree? ")
+        print("0 - No")
+        print("1 - Yes")
+
+        printID3 = int(input("> "))
+
+        if (printID3 < 0 or printID3  > 1):
+            raise Exception('invalid print option.')
+        elif (printID3 == 1):
+            print(tree)
+    except (ValueError) as err:
+        print("ERROR: {}".format(err))
 
 # get_accuracy()
 #
@@ -61,6 +96,9 @@ def execute_algorithm(dataset):
 def get_accuracy(count, length):
     return (count / length) * 100
 
+# split_data
+#
+# This function was designed to help make the execute_algorithm look cleaner.
 def split_data(data, target):
     return train_test_split(data, target, test_size=.3)
 

@@ -1,3 +1,9 @@
+"""
+Author: Sam McGrath
+Class: CS 450
+Instructor: Br. Burton
+"""
+
 import pandas as pd
 import numpy as np
 from decision_tree import build_tree
@@ -7,7 +13,7 @@ from sklearn import datasets as sk_dataset
 from loan import get_loans
 from voting import get_voting
 
-def main():
+def cs450shell(algorithm):
     try:
         print("ID3 Algorithm - CS 450 BYU-Idaho")
         print("Which dataset would you like to use?")
@@ -90,17 +96,14 @@ def print_id3(tree):
     except (ValueError) as err:
         print("ERROR: {}".format(err))
 
-# get_accuracy()
-#
-# This function calculates and returns the accuracy
-def get_accuracy(count, length):
-    return (count / length) * 100
-
 # split_data
 #
 # This function was designed to help make the execute_algorithm look cleaner.
 def split_data(data, target):
     return train_test_split(data, target, test_size=.3)
 
-if __name__ == "__main__":
-    main()
+# get_accuracy()
+#
+# This function calculates and returns the accuracy
+def get_accuracy(count, length):
+    return (count / length) * 100

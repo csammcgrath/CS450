@@ -10,6 +10,7 @@ from decision_tree import build_tree
 from tree import DecisionTree
 from sklearn.model_selection import train_test_split
 from sklearn import datasets as sk_dataset
+from sklearn import tree
 from loan import get_loans
 from voting import get_voting
 
@@ -19,13 +20,16 @@ def cs450shell(algorithm):
         print("Which dataset would you like to use?")
         print("1 - loan (simple)")
         print("2 - voting (hard)")
+        print("3 - compare algorithms")
 
         id3_dataset = int(input("> "))
 
-        if (id3_dataset < 1 or id3_dataset > 2):
+        if (id3_dataset < 1 or id3_dataset > 3):
             raise Exception('invalid dataset selection')
         elif (id3_dataset == 1 or id3_dataset == 2):
             execute_algorithm(id3_dataset)
+        elif (id3_dataset == 3):
+            compare_algorithm()
         else:
             raise Exception("unknown error.")
     except (ValueError) as err:
@@ -77,6 +81,55 @@ def execute_algorithm(dataset):
 
     #report to the user
     print("Accuracy: {:.2f}%".format(accuracy))
+
+# compare_algorithm
+#
+# This function goes through and compares the algorithm with the sklearn's
+# implementation of the algorithm.
+def compare_algorithm():
+    skCount = 0
+    samCount = 0
+
+    data, targets, headers = get_voting()
+
+    #split dataset into random parts
+    train_data, test_data, train_target, test_target = split_data(data, targets)
+
+    #reset the indexes so the dataframe can be properly parsed.
+    train_data.reset_index(inplace=True, drop=True)
+    test_data.reset_index(inplace=True, drop=True)
+    train_target.reset_index(inplace=True, drop=True)
+    test_target.reset_index(inplace=True, drop=True)
+
+    #get the trees initialized
+    samClassifier = DecisionTree()
+    skClassifer = tree.DecisionTreeClassifier()
+
+    #build trees
+    samModel = samClassifier.fit(train_data, train_target, headers)
+    skModel = skClassifer.fit(train_data, train_target)
+
+    #get the predictions
+    samPredicted = samModel.predict(test_data)
+    skPredicted = skModel.predict(test_data)
+
+    #this is important because this is how we can 
+    #measure the accuracy
+    test_target = test_target[headers[-1]]
+
+    #loop through the program and measure the accuracy
+    for index in range(len(test_data)):
+        if skPredicted[index] == test_target[index]:
+            skCount += 1
+
+        if samPredicted[index] == test_target[index]:
+            samCount += 1
+
+    #get the accuracy rating
+    samAccuracy = get_accuracy(samCount, len(test_data))
+    skAccuracy = get_accuracy(skCount, len(test_data))
+
+    print("Sam's ID3 Accuracy: {:.2f}%. \nSK's ID3 Accuracy: {:.2f}%.".format(samAccuracy, skAccuracy))
 
 #print_id3
 #

@@ -1,5 +1,5 @@
-## CS450
-# Machine Learning and Data Mining course at BYU-Idaho
+# CS450
+## Machine Learning and Data Mining course at BYU-Idaho
 
 - W01 - Hardcoded Classifier ==> Main purpose: create an experimental shell for future Machine Learning algorithms.
 - W02 - k-nearest-neighbors algorithm

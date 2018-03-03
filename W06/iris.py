@@ -28,5 +28,6 @@ def get_iris():
     df.replace(classObj, inplace=True)
 
     return stats.zscore(df.as_matrix(columns=headers[:-1])), \
-            df.as_matrix(columns=headers[-1:])
+            df.as_matrix(columns=headers[-1:]), \
+            ["Iris-setosa", "Iris-versicolor", "Iris-virginica"]
     

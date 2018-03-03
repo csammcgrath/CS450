@@ -31,4 +31,5 @@ def get_diabetes():
     #convert the dataframe into numpy arrays.
     #the first return is for data while the second return is the targets.
     return stats.zscore(df.as_matrix(columns=headers[0:8])), \
-            df.as_matrix(columns=headers[8:9])
+            df.as_matrix(columns=headers[8:9]), \
+            ["No", "Yes"]

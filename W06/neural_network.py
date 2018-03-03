@@ -52,9 +52,10 @@ class NeuralNetwork():
         self.data = None
         self.targets = None
 
-    def fit(self, data, targets):
+    def fit(self, data, targets, classes):
         self.data = data
         self.targets = targets
+        self.classes = classes
         self.features = self.data.shape[1]
 
         #determine how many hidden layers/nodes 
@@ -62,12 +63,27 @@ class NeuralNetwork():
 
         #building layers
         for index in range(0, self.numHidden):
-            self.layers.append(self.createLayer(self.features, \
+            self.layers.append(self.createLayer(self.numInputs(index), \
                                self.retrieveNumNodes(index)))
 
         self.train()
 
         return self
+
+    def numInputs(self, layerNum):
+        if (layerNum > 0):
+            return len(self.layers[layerNum - 1]) + 1
+        else:
+            return self.features
+
+    def plotGraph(self, accuracy):
+        print("Accuracy", accuracy)
+        plot.plot(accuracy)
+        plot.title("Training Accuracy - MLP")
+        plot.xlabel("# of epochs")
+        plot.ylabel("Accuracy")
+        plot.legend([accuracy], 'Iris')
+        plot.show()
 
     #predict
     #
@@ -162,8 +178,8 @@ class NeuralNetwork():
                 something = np.argmax(results[-1])
                 predictions.append(something)
                 
-                if (target[0] != something):
-                    self.updateNode(dataPoint, target, results)
+                # if (target[0] != something):
+                self.updateNode(dataPoint, target, results)
             
             for (index, prediction) in enumerate(predictions):
                 if (self.targets[index] == prediction):
@@ -171,17 +187,6 @@ class NeuralNetwork():
 
             #help keep track of accuracy levels for each epoch
             accuracy.append(getAccuracy(count, len(self.targets)))
-        
-        print(accuracy)
-        plot.plot(accuracy)
-        plot.title("Training Accuracy - MLP")
-        plot.xlabel("# of epochs")
-        plot.ylabel("Accuracy")
-        plot.legend([accuracy], 'Iris')
-        plot.show()
-        # print("EPOCH accuracy array")
-        # print(accuracy)
-
                 
     def updateNode(self, data, target, results):
         #we must update errors then weights
@@ -191,8 +196,6 @@ class NeuralNetwork():
     def updateWeights(self, inputs, results):
         for (index, layer) in enumerate(self.layers):
             for (node) in layer:
-                # print("OLD")
-                # print(node.weights)
                 if (index > 0):
                     #here, we know that there is a previous layer that is
                     #NOT the input layer
@@ -201,8 +204,6 @@ class NeuralNetwork():
                     #here, we know that this is the second layer in the neural
                     #network so we can just use the input layer
                     self.updateNodeWeights(node, inputs.tolist())
-                # print("NEW")
-                # print(node.weights)
 
     def updateNodeWeights(self, node, inputs):
         tempInputArray = np.append(inputs, [-1])
@@ -228,7 +229,7 @@ class NeuralNetwork():
         #since the error is calculated differently for each type of
         #layer
         # print(len(results))
-        if (indexLayer < (len(results)) - 1):
+        if (indexLayer < (len(results) - 1)):
             return self.getHiddenNodeError(results[indexLayer][indexNode], \
                                     self.getWeightsNode(indexNode, indexLayer), \
                                     self.getErrorsNode(indexNode, indexLayer))
@@ -287,7 +288,6 @@ class NeuralNetwork():
             results.append(singleResults)
 
         return results
-
 
 # getAccuracy()
 #

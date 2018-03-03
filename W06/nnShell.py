@@ -30,9 +30,9 @@ def cs450shell(algorithm):
 
 def executeAlgorithm(dataset):
     if (dataset == 1):
-        data, targets = get_iris()
+        data, targets, classes = get_iris()
     elif (dataset == 2):
-        data, targets = get_diabetes()
+        data, targets, classes = get_diabetes()
 
     classifier = NeuralNetwork()
     count = 0
@@ -40,7 +40,7 @@ def executeAlgorithm(dataset):
     #split dataset into random parts
     train_data, test_data, train_target, test_target = train_test_split(data, targets, test_size=.3)
 
-    model = classifier.fit(train_data, train_target)
+    model = classifier.fit(train_data, train_target, classes)
 
     #target_predicted is an array of predictions that is received by the predict
     target_predicted = model.predict(test_data)

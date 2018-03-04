@@ -71,6 +71,8 @@ class NeuralNetwork():
         self.buildNetwork()
         self.train()
 
+        return self
+
     #train
     #
     #This is the heart of the Neural Network algorithm.
@@ -118,7 +120,29 @@ class NeuralNetwork():
 
         #report to the user
         self.plotGraph(accuracy)
-        print("Accuracy: {:.2f}%".format(finalEpochAccuracy))
+        # print("Accuracy: {:.2f}%".format(finalEpochAccuracy))
+
+    #predict
+    #
+    # It calls predictClass and appends the results of the
+    # function call to the predictions array
+    def predict(self, data):
+        model = []
+
+        for (item) in data:
+            model.append(self.predictClass(item))
+
+        return model
+
+    #predictClass
+    #
+    #gets the results and return the argmax 
+    #of that results array
+    def predictClass(self, item):
+        results = self.getResults(item)
+
+        #return max index
+        return np.argmax(results[-1])
     
     #plotGraph
     #

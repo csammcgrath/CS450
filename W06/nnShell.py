@@ -40,21 +40,21 @@ def executeAlgorithm(dataset):
     #split dataset into random parts
     train_data, test_data, train_target, test_target = train_test_split(data, targets, test_size=.3)
 
-    model = classifier.fit(train_data, train_target, classes)
+    classifier.fit(train_data, train_target, classes)
 
     #target_predicted is an array of predictions that is received by the predict
-    target_predicted = model.predict(test_data)
+    # target_predicted = model.predict(test_data)
 
-    #loop through the target_predicted and count up the correct predictions
-    for index in range(len(target_predicted)):
-        #increment counter for every match from
-        #target_predicted and test_target
-        if target_predicted[index] == test_target[index]:
-            count += 1
+    # #loop through the target_predicted and count up the correct predictions
+    # for index in range(len(target_predicted)):
+    #     #increment counter for every match from
+    #     #target_predicted and test_target
+    #     if target_predicted[index] == test_target[index]:
+    #         count += 1
 
-    accuracy = get_accuracy(count, len(test_data))
+    # accuracy = get_accuracy(count, len(test_data))
 
-    print(accuracy)
+    # print(accuracy)
 
 # get_accuracy()
 #

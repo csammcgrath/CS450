@@ -6,6 +6,8 @@ list below. The R algorithms inside `cs450shell.py` has yet to be implemented. I
 after the semester is over.
 
 > TODO:
+> * [ ] Convert all .data file calls into csv files to be parsed through `read_csv()`
+> * [ ] Clean up repository
 > * [ ] Incorporate R algorithms into `cs450shell.py`
 
 All of these algorithms are written from scratch through Python:

@@ -1,7 +1,7 @@
 # CS450
 ## Machine Learning and Data Mining course at BYU-Idaho
 
-> For best results, clone this repository and run `cs450shell.py`. It is able to execute all of the algorithms
+> For best results, clone this repository and run `cs450shell.py` inside W06 folder. It is able to execute all of the algorithms
 list below. The R algorithms inside `cs450shell.py` has yet to be implemented. It will be a project of mine
 after the semester is over.
 

@@ -1,6 +1,13 @@
 # CS450
 ## Machine Learning and Data Mining course at BYU-Idaho
 
+> For best results, clone this repository and run `cs450shell.py`. It is able to execute all of the algorithms
+list below. The R algorithms inside `cs450shell.py` has yet to be implemented. It will be a project of mine
+after the semester is over.
+
+> TODO:
+> * [ ] Incorporate R algorithms into `cs450shell.py`
+
 All of these algorithms are written from scratch through Python:
 - W01 - Hardcoded Classifier ==> Main purpose: create an experimental shell for future Machine Learning algorithms.
 - W02 - k-nearest-neighbors algorithm

@@ -10,12 +10,6 @@ cat('Apriori Algorithm BYU-Idaho\n')
 cat('-----------------------------\n')
 cat('Note: Groceries dataset will be utilized for this algorithm.\n\n')
 
-cat('Minimum support:')
-supportNum <- readline('>>> ')
-
-cat('Minimum confidence:')
-confidenceNum <- readline('>>> ')
-
 cat('Sort by:\n')
 cat('1 - Support\n')
 cat('2 - Confidence\n')
@@ -32,13 +26,12 @@ if (typeNum == 1) {
     outputNum <- readline('>>> ')
 }
 
-# rules <- apriori(Groceries, parameter = list(supportNum, confidenceNum))
-rules <- apriori(Groceries, parameter = list(supp = .001, conf = .5))
+rules <- apriori(Groceries, parameter = list(supp = .001, conf = 0.8))
 
 if (sortNum == 1) {
     rules <- sort(rules, by="support", decreasing=TRUE)
 } else if (sortNum == 2) {
-    rules <- sort(rules, by="support", decreasing=TRUE)
+    rules <- sort(rules, by="confidence", decreasing=TRUE)
 } else {
     rules <- sort(rules, by="lift", decreasing=TRUE)
 }
@@ -46,5 +39,5 @@ if (sortNum == 1) {
 if (typeNum == 1) {
     inspect(rules[1:outputNum])
 } else {
-    plot(rules,method="graph",interactive=TRUE,shading=NA)
+    plot(rules[1:3],method="graph",interactive=TRUE,shading=NA)
 }

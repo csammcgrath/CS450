@@ -22,9 +22,9 @@ if (algorithm == 1) {
 
     agglo <- readline("> ")
 
+    # Load the dataset
+    data <- state.x77
     if (agglo == 1) {
-        # Load the dataset
-        data <- state.x77
 
         # first compute a distance matrix then cluster it
         hcOriginal <- hclust(dist(as.matrix(data)))
@@ -33,8 +33,8 @@ if (algorithm == 1) {
         plot(hcOriginal, xlab="States", ylab="Cluster")
     } else if (agglo == 2) {
         # Repeat the previous item with a normalized dataset and note any differences
-        data <- scale(state.x77)
-        hcNormalized <- hclust(dist(as.matrix(data)))
+        dataScaled <- scale(state.x77)
+        hcNormalized <- hclust(dist(as.matrix(dataScaled)))
 
         plot(hcNormalized, xlab="States", ylab="Cluster")
     } else if (agglo == 3) {
@@ -48,7 +48,7 @@ if (algorithm == 1) {
         frostData <- data[,7, drop=FALSE]
         hcFrost <- hclust(dist(as.matrix(frostData)))
 
-        plot(frostData, xlab="States", ylab="Cluster")
+        plot(hcFrost, xlab="States", ylab="Cluster")
     }
 } else {
     cat("\n1 - Cluster Plot with 3 Clusters\n")

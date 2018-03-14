@@ -20,3 +20,4 @@ All of these algorithms are written from scratch through Python:
 These next algorithms were purely for experimentation with different Machine Learning algorithms through R.
 - W07 - Support Vector Machine
 - W09 - Apriori
+- W10 - Clustering
